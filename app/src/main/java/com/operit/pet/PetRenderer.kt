@@ -20,7 +20,7 @@ import kotlin.math.max
 class PetRenderer(private val context: Context) {
 
     companion object {
-        const val SIZE_DP = 150
+        const val SIZE_DP = 120
     }
 
     private val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
