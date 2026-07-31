@@ -72,7 +72,7 @@ class SupabaseClient(
                     .header("Authorization", "Bearer $anonKey")
                     .header("Content-Type", "application/json")
                     .header("Prefer", "return=minimal")
-                    .post(okhttp3.RequestBody.create(okhttp3.MediaType.get("application/json"), body.toString()))
+                    .post(okhttp3.RequestBody.create("application/json".toMediaType(), body.toString()))
                     .build()
                 client.newCall(req).execute().use { }
             } catch (e: IOException) {
