@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" shape-rendering="crispEdges">
+  <defs>
+    <!-- 重复使用的身体像素调色板 -->
+    <!-- 主色：#ffd9e8 粉肤  深色描边：#4a2b3a -->
+    <g id="base-body">
+      <!-- 头发/耳朵 -->
+      <rect x="56"  y="80"  width="24" height="16" fill="#ff9ecb"/>
+      <rect x="176" y="80"  width="24" height="16" fill="#ff9ecb"/>
+      <rect x="48"  y="96"  width="16" height="32" fill="#5c3a4d"/>
+      <rect x="192" y="96"  width="16" height="32" fill="#5c3a4d"/>
+      <!-- 头顶 - 一撮俏皮呆毛 -->
+      <rect x="112" y="40"  width="8"  height="8"  fill="#ff9ecb"/>
+      <rect x="120" y="48"  width="8"  height="8"  fill="#ff9ecb"/>
+      <!-- 脸 -->
+      <rect x="72"  y="96"  width="112" height="96" fill="#ffd9e8"/>
+      <!-- 刘海 -->
+      <rect x="72"  y="96"  width="112" height="24" fill="#5c3a4d"/>
+    </g>
+  </defs>
+  <g id="sleep">
+    <use href="#base-body"/>
+    <rect x="104" y="152" width="16" height="4"  fill="#2b1b24"/>
+    <rect x="136" y="152" width="16" height="4"  fill="#2b1b24"/>
+    <!-- 嘴边 zZ -->
+    <rect x="176" y="120" width="8"  height="8"  fill="#8fd3ff"/>
+    <rect x="168" y="132" width="8"  height="8"  fill="#8fd3ff"/>
+    <rect x="160" y="144" width="8"  height="8"  fill="#8fd3ff"/>
+    <!-- 嘴（打呼） -->
+    <rect x="120" y="180" width="16" height="4"  fill="#c96a7e"/>
+  </g>
+</svg>

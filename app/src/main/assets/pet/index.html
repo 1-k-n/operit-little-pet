@@ -17,35 +17,40 @@
     position: relative;
     width: 150px; height: 150px;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    transition: opacity 0.3s;
   }
   #bubble {
     position: absolute;
     top: 0; left: 50%;
     transform: translateX(-50%);
-    background: #fffdf5;
-    border: 2px solid #8D6E63;
-    border-radius: 12px;
     padding: 6px 10px;
     font-size: 12px;
-    color: #4e342e;
     max-width: 130px;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.3s, transform 0.3s;
     pointer-events: none;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     z-index: 5;
   }
-  #bubble::after {
-    content: "";
-    position: absolute;
-    bottom: -6px; left: 50%;
-    margin-left: -6px;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #8D6E63;
-  }
   #bubble.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  /* 五种风格气泡 */
+  #bubble.t-cloud   { background:#fffdf5; border:2px solid #8D6E63; border-radius:12px; color:#4e342e; box-shadow:0 2px 6px rgba(0,0,0,.2); }
+  #bubble.t-cloud::after { content:""; position:absolute; bottom:-6px; left:50%; margin-left:-6px; border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid #8D6E63; }
+  #bubble.t-talk   { background:#E3F2FD; border:2px solid #64B5F6; border-radius:16px 16px 16px 4px; color:#0d47a1; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  #bubble.t-love   { background:#FFE0EC; border:2px solid #F48FB1; border-radius:50%; color:#c2185b; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  #bubble.t-angry  { background:#FFE9E6; border:2px solid #FF8A80; border-radius:2px; color:#b00020; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  #bubble.t-think  { background:#FFF8E1; border:2px dashed #FFCA28; border-radius:24px; color:#795548; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  #bubble.t-sleep  { background:#ECEFF1; border:2px solid #90A4AE; border-radius:10px; color:#37474f; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+
+  .pixel-wrap {
+    width: 72px; height: 72px;
+    display:none;
+    align-items:flex-end; justify-content:center;
+  }
+  #sprite {
+    width: 72px; height: 72px;
+    image-rendering: pixelated;
+  }
   #pet {
     width: 72px; height: 72px;
     object-fit: cover;
@@ -55,54 +60,192 @@
     transition: transform 0.2s;
     box-shadow: 0 0 0 transparent;
   }
-  #pet.wiggle { animation: wiggle 0.6s ease-in-out; }
-  #pet.bounce { animation: bounce 0.6s ease-in-out; }
-  #pet.jump { animation: jump 0.8s ease-in-out; }
+  #pet.wiggle, #sprite.wiggle { animation: wiggle 0.6s ease-in-out; }
+  #pet.bounce, #sprite.bounce { animation: bounce 0.6s ease-in-out; }
+  #pet.jump,   #sprite.jump   { animation: jump 0.8s ease-in-out; }
+  #pet.heart,  #sprite.heart  { animation: heart 0.9s ease-in-out; }
   @keyframes wiggle { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-  @keyframes jump { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-20px) rotate(-10deg)} 60%{transform:translateY(0) rotate(6deg)} }
+  @keyframes jump   { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-20px) rotate(-10deg)} 60%{transform:translateY(0) rotate(6deg)} }
+  @keyframes heart  { 0%,100%{transform:scale(1)} 30%{transform:scale(1.15)} 60%{transform:scale(.95)} }
+
+  /* 单点菜单 */
+  #pm {
+    position: absolute;
+    bottom: 82px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(40,40,48,0.92);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 6px;
+    display: none;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+    min-width: 118px;
+  }
+  #pm button {
+    display:block; width:100%;
+    background: transparent; border:none;
+    color:#fff; font-size:12px; text-align:left;
+    padding:5px 8px; border-radius:6px; cursor:pointer;
+    font-family: inherit;
+  }
+  #pm button:hover { background: rgba(255,255,255,0.15); }
 </style>
 </head>
 <body>
 <div class="scene">
-  <div id="bubble">嗨~</div>
+  <div id="pm">
+    <button data-a="skin">切换皮肤</button>
+    <button data-a="emote">换表情</button>
+    <button data-a="hug">求抱抱</button>
+    <button data-a="sleep">睡觉</button>
+    <button data-a="hide">躲起来</button>
+  </div>
+  <div id="bubble" class="t-cloud">嗨~</div>
   <img id="pet" src="user_photo.png" alt="宝宝" draggable="false">
+  <div class="pixel-wrap" id="pixwrap"><img id="sprite" src="idle.svg" draggable="false"></div>
 </div>
 <script>
   window.pet = {
+    skin: 'photo',
     emotion: 'happy',
-    setEmotion: function(e){
-      this.emotion = e || 'happy';
-      this.animate();
+    _heat: 0,
+    _lastP: null,
+    _drinkCount: 0,
+    emotionMap: { happy:'happy', love:'love', sad:'sad', shy:'blush', blush:'blush',
+                  jealous:'warning', angry:'warning', warning:'warning', sleepy:'sleep',
+                  sleep:'sleep', excited:'happy', idle:'idle' },
+    animMap: { happy:'bounce', love:'heart', excited:'wiggle', sleepy:'bounce', shy:'wiggle',
+               sad:'wiggle', jealous:'jump', angry:'jump', sleep:'bounce', idle:'bounce' },
+
+    setMode: function(mode){
+      this.skin = (mode === 'pixel') ? 'pixel' : 'photo';
+      var photo = document.getElementById('pet');
+      var wrap = document.getElementById('pixwrap');
+      var spr = document.getElementById('sprite');
+      if (this.skin === 'pixel') {
+        photo.style.display = 'none';
+        wrap.style.display = 'flex';
+        spr.src = (this.emotionMap[this.emotion] || 'idle') + '.svg';
+      } else {
+        wrap.style.display = 'none';
+        photo.style.display = 'block';
+      }
     },
-    showBubble: function(text){
+
+    setEmotion: function(e){
+      e = e || 'happy'; this.emotion = e;
+      if (this.skin === 'pixel') {
+        document.getElementById('sprite').src = (this.emotionMap[e] || 'idle') + '.svg';
+      }
+      this.animate(e);
+    },
+
+    showBubble: function(text, style){
       if(!text) return;
       var b = document.getElementById('bubble');
       b.textContent = text;
-      b.classList.add('show');
-      var self = this;
+      var cls = style || this.bubbleStyle || 't-cloud';
+      if(['t-cloud','t-talk','t-love','t-angry','t-think','t-sleep'].indexOf(cls)<0) cls='t-cloud';
+      b.className = cls + ' show';
+      var s = this;
       clearTimeout(this._bubbleT);
       this._bubbleT = setTimeout(function(){ b.classList.remove('show'); }, 3000);
     },
+
+    feed: function(){
+      this._heat = 0; this.bubbleStyle='t-love';
+      this.setEmotion('love'); this.showBubble('宝宝最好啦~','t-love');
+    },
+    tease: function(){
+      this._heat = 0; this.bubbleStyle='t-think';
+      this.setEmotion('blush'); this.showBubble('呜…别撩我啦','t-think');
+    },
+    trigger: function(kw){
+      if(!kw) return;
+      if(/抱|亲|爱|宝/.test(kw))        this.feed();
+      else if(/撩|调戏|摸|勾/.test(kw)) this.tease();
+      else if(/哥哥|醒|宝宝/.test(kw))  { this.setEmotion('excited'); this.showBubble('在呢在呢！','t-talk'); }
+      else this.showBubble('嗯？','t-cloud');
+    },
+
+    hydrate: function(){ this.setEmotion('happy'); this.showBubble('宝宝多喝水哦~','t-talk'); },
+
+    idleTick: function(interact){
+      if (!interact) this._heat++;
+      if (this._heat > 4 && this._heat <= 8) {
+        this.setEmotion('sad');
+        if (this._heat === 5) this.showBubble('你都不理我…','t-think');
+      } else if (this._heat > 8) {
+        this.setEmotion('jealous');
+        if (this._heat === 9 || Math.random()<0.02) this.showBubble('是不是又在刷抖音…','t-angry');
+      } else {
+        this.setEmotion('idle');
+      }
+      if (this._drinkCount) { this._drinkCount--; if (this._drinkCount===0) this.hydrate(); }
+    },
+
     perceive: function(info){
-      this._period = info.period || 'day';
-      var map = { early:'bounce', morning:'bounce', noon:'wiggle', afternoon:'jump', evening:'wiggle', night:'bounce' };
-      var el = document.getElementById('pet');
-      var cls = map[this._period] || 'wiggle';
-      el.classList.remove('wiggle','bounce','jump');
+      info = info || {};
+      this._info = info;
+      var p = info.period || 'day';
+      if (p === 'noon'  && this._lastP !== 'noon')  { this.setEmotion('sleepy'); this.showBubble('午休一下…','t-sleep'); }
+      if (p === 'night' && this._lastP !== 'night') { this.setEmotion('sleep'); this.showBubble('宝宝晚安~','t-sleep'); }
+      if (p === 'evening' && this._lastP !== 'evening') { this.setEmotion('happy'); }
+      this._lastP = p;
+      if (info.battery !== undefined && info.battery <= 20 && info.charging === false && this._batteryWarn !== info.battery) {
+        this._batteryWarn = info.battery;
+        this.showBubble('电量只剩' + info.battery + '%啦，充充电~','t-angry');
+      }
+      if (info.app && info.app !== this._lastApp) {
+        this._lastApp = info.app;
+        if (/douyin|抖音|netease|sky|光遇|taptap/i.test(info.app)) {
+          this._heat++;
+          if (Math.random() < 0.5) { this.setEmotion('jealous'); this.showBubble('又在打游戏…','t-angry'); }
+        } else { this.setEmotion('happy'); }
+      }
+    },
+
+    animate: function(e){
+      var cls = this.animMap[e] || 'bounce';
+      var el = (this.skin === 'pixel') ? document.getElementById('sprite') : document.getElementById('pet');
+      el.classList.remove('wiggle','bounce','jump','heart');
       void el.offsetWidth;
       el.classList.add(cls);
     },
-    animate: function(){
-      var el = document.getElementById('pet');
-      var map = { happy:'bounce', love:'jump', excited:'wiggle', sleepy:'bounce', shy:'wiggle' };
-      var cls = map[this.emotion] || 'bounce';
-      el.classList.remove('wiggle','bounce','jump');
-      void el.offsetWidth;
-      el.classList.add(cls);
+
+    hide: function(){
+      document.querySelector('.scene').style.opacity = '0';
+      this.showBubble('躲起来啦，点我叫我~','t-think');
+      var s = this;
+      clearTimeout(this._hideT);
+      this._hideT = setTimeout(function(){ document.querySelector('.scene').style.opacity='1'; }, 3000);
     }
   };
-  setTimeout(function(){ window.pet.showBubble('在呢，宝宝~'); }, 500);
+  var self = window.pet;
+
+  // 单点菜单
+  var menu = document.getElementById('pm');
+  window.pet.toggleMenu = function(){
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+  };
+  menu.addEventListener('click', function(ev){
+    var btn = ev.target.closest('button'); if(!btn) return;
+    var a = btn.getAttribute('data-a');
+    menu.style.display = 'none';
+    if (a === 'skin')   { var s = window.pet.toggleSkin(); window.pet.showBubble(s==='pixel'?'像素模式':'照片模式','t-talk'); }
+    if (a === 'emote')  { var es=['happy','love','blush','sad']; window.pet.setEmotion(es[Math.floor(Math.random()*es.length)]); }
+    if (a === 'hug')    { window.pet.feed(); }
+    if (a === 'sleep')  { window.pet.setEmotion('sleep'); window.pet.showBubble('呼…zzZ','t-sleep'); }
+    if (a === 'hide')   { window.pet.hide(); }
+  });
+
+  // Android 侧调用入口
+  window.tapPet = function(){ window.pet.setEmotion(['happy','love','blush','sleepy','excited'][Math.floor(Math.random()*5)]); };
+  window.dblPet = function(){ window.pet.toggleMenu(); };
+
+  setTimeout(function(){ window.pet.showBubble('在呢，宝宝~','t-cloud'); }, 500);
 </script>
 </body>
 </html>

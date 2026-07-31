@@ -41,11 +41,16 @@ class FloatPetService : Service() {
         startForeground(NOTIF_ID, buildNotification())
 
         renderer = PetRenderer(this)
-        renderer?.show(onDoubleTap = {
-            // 双击切换表情：随机一个表情
-            val emoji = listOf("happy", "love", "sleepy", "shy", "excited").random()
-            renderer?.sendToPet("window.pet && window.pet.setEmotion('$emoji');")
-        })
+        renderer?.show(
+            onDoubleTap = {
+                // 双击：呼出单点菜单
+                renderer?.sendToPet("window.pet && window.pet.dblPet();")
+            },
+            onSingleTap = {
+                // 单击：换表情 + 亲昵交互
+                renderer?.sendToPet("window.pet && window.pet.tapPet();")
+            }
+        )
 
         // 感知系统
         perception = PetPerception(this)

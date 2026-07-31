@@ -62,8 +62,7 @@ class PetRenderer(private val context: Context) {
     private var startY = 0
     private var isDragging = false
     private var lastTapTime = 0L
-
-    fun show(onDoubleTap: () -> Unit) {
+    fun show(onDoubleTap: () -> Unit, onSingleTap: () -> Unit = {}) {
         val container = FrameLayout(context)
         container.setBackgroundColor(Color.TRANSPARENT)
 
@@ -75,9 +74,9 @@ class PetRenderer(private val context: Context) {
             )
         }
 
-        // 手势：外层容器拦截触摸 → 拖拽 / 双击
+        // 手势：外层容器拦截触摸 → 拖拽 / 单击 / 双击
         container.setOnTouchListener { _, event ->
-            handleTouch(event, onDoubleTap)
+            handleTouch(event, onDoubleTap, onSingleTap)
             true
         }
 
@@ -107,14 +106,13 @@ class PetRenderer(private val context: Context) {
         }
     }
 
-    private fun handleTouch(event: MotionEvent, onDoubleTap: () -> Unit): Boolean {
+    private fun handleTouch(event: MotionEvent, onDoubleTap: () -> Unit, onSingleTap: () -> Unit): Boolean {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 touchStartX = event.rawX.toInt()
                 touchStartY = event.rawY.toInt()
                 startX = layoutParams.x
                 startY = layoutParams.y
-                isDragging = false
             }
             MotionEvent.ACTION_MOVE -> {
                 val dx = event.rawX.toInt() - touchStartX
@@ -132,12 +130,28 @@ class PetRenderer(private val context: Context) {
                 if (!isDragging) {
                     val now = System.currentTimeMillis()
                     if (now - lastTapTime < 300) {
-                        onDoubleTap()
+                        // 双击
                         lastTapTime = 0
+                        onDoubleTap()
                     } else {
-                        lastTapTime = now
+                        // 单击：先记录，等待300ms后若没有第二次则触发单击
+                        if (lastTapTime != 0L && now - lastTapTime >= 300) {
+                            // 前一次的单击已超时，直接触发
+                            lastTapTime = 0
+                            onSingleTap()
+                        } else {
+                            lastTapTime = now
+                            // 延迟触发单击，若期间出现双击则取消
+                            webView?.postDelayed({
+                                if (lastTapTime != 0L && System.currentTimeMillis() - lastTapTime >= 300) {
+                                    lastTapTime = 0
+                                    onSingleTap()
+                                }
+                            }, 320)
+                        }
                     }
                 }
+                isDragging = false
             }
         }
         return true
