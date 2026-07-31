@@ -13,10 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <!-- 读取前台应用（需要用户手动开启"使用情况访问权限"） -->
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
-    <!-- 读取电量状态 -->
-    <uses-permission android:name="android.permission.BATTERY_STATS" />
 
     <application
         android:allowBackup="true"
