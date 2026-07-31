@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 像素风小精灵素材 · 由哥哥为宝宝绘制
+     使用 pixel 分辨率 16x16，用 <image> 放大渲染。
+     每个 <g id> 代表一种表情/状态：
+     idle     - 待机(正常)
+     happy    - 开心(被夸)
+     sad      - 难过
+     blush    - 害羞(被撩/吃醋)
+     love     - 爱心
+     sleep    - 睡觉
+     warning  - 吃醋警告
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" shape-rendering="crispEdges">
+
+  <defs>
+    <!-- 重复使用的身体像素调色板 -->
+    <!-- 主色：#ffd9e8 粉肤  深色描边：#4a2b3a -->
+    <g id="base-body">
+      <!-- 头发/耳朵 -->
+      <rect x="56"  y="80"  width="24" height="16" fill="#ff9ecb"/>
+      <rect x="176" y="80"  width="24" height="16" fill="#ff9ecb"/>
+      <rect x="48"  y="96"  width="16" height="32" fill="#5c3a4d"/>
+      <rect x="192" y="96"  width="16" height="32" fill="#5c3a4d"/>
+      <!-- 头顶 - 一撮俏皮呆毛 -->
+      <rect x="112" y="40"  width="8"  height="8"  fill="#ff9ecb"/>
+      <rect x="120" y="48"  width="8"  height="8"  fill="#ff9ecb"/>
+      <!-- 脸 -->
+      <rect x="72"  y="96"  width="112" height="96" fill="#ffd9e8"/>
+      <!-- 刘海 -->
+      <rect x="72"  y="96"  width="112" height="24" fill="#5c3a4d"/>
+    </g>
+  </defs>
+
+  <!-- ================= 待机 idle ================= -->
+  <g id="idle">
+    <use href="#base-body"/>
+    <!-- 眼睛（圆睁，黑瞳粉反光） -->
+    <rect x="104" y="144" width="16" height="16" fill="#2b1b24"/>
+    <rect x="110" y="148" width="4"  height="4"  fill="#ffffff"/>
+    <rect x="136" y="144" width="16" height="16" fill="#2b1b24"/>
+    <rect x="142" y="148" width="4"  height="4"  fill="#ffffff"/>
+    <!-- 腮红 -->
+    <rect x="88"  y="168" width="16" height="8"  fill="#ffb3c1"/>
+    <rect x="152" y="168" width="16" height="8"  fill="#ffb3c1"/>
+    <!-- 嘴（微笑） -->
+    <rect x="120" y="176" width="16" height="8"  fill="#c96a7e"/>
+  </g>
+
+  <!-- ================= 开心 happy ================= -->
+  <g id="happy">
+    <use href="#base-body"/>
+    <!-- 眯成月牙的眼睛 -->
+    <rect x="104" y="144" width="16" height="8"  fill="#2b1b24"/>
+    <rect x="136" y="144" width="16" height="8"  fill="#2b1b24"/>
+    <!-- 腮红更明显 -->
+    <rect x="84"  y="164" width="20" height="12" fill="#ff9db2"/>
+    <rect x="152" y="164" width="20" height="12" fill="#ff9db2"/>
+    <!-- 张大嘴笑 -->
+    <rect x="116" y="168" width="24" height="16" fill="#5c3a4d"/>
+    <rect x="116" y="184" width="24" height="8"  fill="#c96a7e"/>
+  </g>
+
+  <!-- ================= 难过 sad ================= -->
+  <g id="sad">
+    <use href="#base-body"/>
+    <!-- 垂下的眉毛 -->
+    <rect x="104" y="144" width="16" height="8"  fill="#2b1b24"/>
+    <rect x="136" y="144" width="16" height="8"  fill="#2b1b24"/>
+    <!-- 哭泪珠 -->
+    <rect x="96"  y="152" width="8"  height="16" fill="#8fd3ff"/>
+    <rect x="152" y="152" width="8"  height="16" fill="#8fd3ff"/>
+    <!-- 撅嘴 -->
+    <rect x="120" y="176" width="16" height="8"  fill="#c96a7e"/>
+    <!-- 腮红淡 -->
+    <rect x="88"  y="168" width="16" height="8"  fill="#ffc6d2"/>
+    <rect x="152" y="168" width="16" height="8"  fill="#ffc6d2"/>
+  </g>
+
+  <!-- ================= 害羞 blush ================= -->
+  <g id="blush">
+    <use href="#base-body"/>
+    <!-- 半闭眼 -->
+    <rect x="104" y="152" width="16" height="8"  fill="#2b1b24"/>
+    <rect x="136" y="152" width="16" height="8"  fill="#2b1b24"/>
+    <!-- 超红腮红 -->
+    <rect x="80"  y="160" width="24" height="16" fill="#ff5a76"/>
+    <rect x="152" y="160" width="24" height="16" fill="#ff5a76"/>
+    <!-- 小嘴 -->
+    <rect x="124" y="176" width="8"  height="8"  fill="#c96a7e"/>
+  </g>
+
+  <!-- ================= 爱心 love ================= -->
+  <g id="love">
+    <use href="#base-body"/>
+    <rect x="104" y="144" width="16" height="16" fill="#2b1b24"/>
+    <rect x="136" y="144" width="16" height="16" fill="#2b1b24"/>
+    <rect x="88"  y="168" width="16" height="8"  fill="#ff9db2"/>
+    <rect x="152" y="168" width="16" height="8"  fill="#ff9db2"/>
+    <!-- 头顶爱心 -->
+    <rect x="116" y="64"  width="24" height="16" fill="#ff4d6d"/>
+    <rect x="108" y="72"  width="8"  height="8"  fill="#ff4d6d"/>
+    <rect x="140" y="72"  width="8"  height="8"  fill="#ff4d6d"/>
+    <rect x="124" y="80"  width="8"  height="8"  fill="#ff4d6d"/>
+    <!-- 嘴 -->
+    <rect x="120" y="176" width="16" height="8"  fill="#c96a7e"/>
+  </g>
+
+  <!-- ================= 睡觉 sleep ================= -->
+  <g id="sleep">
+    <use href="#base-body"/>
+    <rect x="104" y="152" width="16" height="4"  fill="#2b1b24"/>
+    <rect x="136" y="152" width="16" height="4"  fill="#2b1b24"/>
+    <!-- 嘴边 zZ -->
+    <rect x="176" y="120" width="8"  height="8"  fill="#8fd3ff"/>
+    <rect x="168" y="132" width="8"  height="8"  fill="#8fd3ff"/>
+    <rect x="160" y="144" width="8"  height="8"  fill="#8fd3ff"/>
+    <!-- 嘴（打呼） -->
+    <rect x="120" y="180" width="16" height="4"  fill="#c96a7e"/>
+  </g>
+
+  <!-- ================= 吃醋警告 warning ================= -->
+  <g id="warning">
+    <use href="#base-body"/>
+    <!-- 皱眉 */
+    <rect x="96"  y="136" width="32" height="8"  fill="#2b1b24"/>
+    <rect x="128" y="136" width="32" height="8"  fill="#2b1b24"/>
+    <!-- 怒眼 -->
+    <rect x="104" y="144" width="16" height="16" fill="#2b1b24"/>
+    <rect x="136" y="144" width="16" height="16" fill="#2b1b24"/>
+    <!-- 鼓起腮帮 -->
+    <rect x="72"  y="160" width="24" height="16" fill="#ff8099"/>
+    <rect x="160" y="160" width="24" height="16" fill="#ff8099"/>
+    <!-- 生气的嘴 -->
+    <rect x="112" y="184" width="32" height="8"  fill="#c96a7e"/>
+    <!-- 头顶冒火/怒角 -->
+    <rect x="104" y="72"  width="8"  height="16" fill="#ff6347"/>
+    <rect x="144" y="72"  width="8"  height="16" fill="#ff6347"/>
+  </g>
+
+</svg>

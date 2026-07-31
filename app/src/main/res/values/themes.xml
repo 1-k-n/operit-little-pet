@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.OperitPet" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#8D6E63</item>
+        <item name="android:windowBackground">#FFF8E7</item>
+    </style>
+</resources>

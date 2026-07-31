@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 小精灵启动图标背景：暖粉紫渐变，与像素精灵相衬 -->
+    <color name="ic_launcher_bg">#FFE0B2</color>
+</resources>

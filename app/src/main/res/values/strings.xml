@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Operit 小精灵</string>
+    <string name="float_service_channel">浮标精灵服务</string>
+    <string name="float_service_title">小精灵</string>
+    <string name="float_service_text">我在陪着你的屏幕</string>
+    <string name="start_service">启动小精灵</string>
+    <string name="stop_service">关闭小精灵</string>
+    <string name="permission_denied">需要悬浮窗和通知权限才能让我出现</string>
+</resources>
