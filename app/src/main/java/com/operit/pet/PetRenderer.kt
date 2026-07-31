@@ -74,8 +74,10 @@ class PetRenderer(private val context: Context) {
             )
         }
 
-        // 手势：外层容器拦截触摸 → 拖拽 / 单击 / 双击
-        container.setOnTouchListener { _, event ->
+        // 手势：在 WebView 自身拦截触摸 → 拖拽 / 单击 / 双击
+        // 注意：不能挂在父容器 FrameLayout 上，因为 WebView 作为子 View 会优先
+        // 消费所有触摸事件，父容器的 OnTouchListener 不会被触发导致手势失效。
+        webView?.setOnTouchListener { _, event ->
             handleTouch(event, onDoubleTap, onSingleTap)
             true
         }
